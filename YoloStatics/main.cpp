@@ -47,11 +47,24 @@ QVector<int> GetClassCount(QString fileName)
     file.close();
     return  result;
 }
+//================================================================================
+void PrintHelpMenu()
+{
+           qDebug()<<"help :";
+           qDebug()<<"Usage: YoloDatasetTools /path/to/labels";
+
+}
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
+    if(argc<2){
+        PrintHelpMenu();
+
+        return 0;
+    }
+    qDebug()<<"input path:"<<argv[1];
     QVector<int> labels;
-    QStringList labelFiles=GetDatatLabelFiles("/home/cast/Desktop/autolabel");
+    QStringList labelFiles=GetDatatLabelFiles(argv[1]);
     for(int i=0;i<labelFiles.count();i++)
     {
 
