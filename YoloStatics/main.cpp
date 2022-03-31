@@ -98,7 +98,7 @@ int main(int argc, char *argv[])
 
     for(int i=min;i<=max;i++)
     {
-        qDebug()<<"count lable "<<i<<" "<<classNames[i]<<" = "<<labels.count(i) << " " << labels.count(i)*100 /labels.length()<<"%";
+        qDebug()<<""<<i<<" "<<classNames[i]<<" = "<<labels.count(i) << " " << labels.count(i)*100 /labels.length()<<"%";
 
 
     }
