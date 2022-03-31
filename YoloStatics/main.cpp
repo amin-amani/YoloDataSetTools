@@ -48,9 +48,31 @@ QVector<int> GetClassCount(QString fileName)
     return  result;
 }
 //================================================================================
+
+QStringList GetClassNames(QString fileName)
+{
+   QStringList result;
+ QFile file(fileName);
+   if(!file.open(QFile::ReadOnly))return result;
+   while(true)
+   {
+
+       QString line=file.readLine();
+       result.append(line.trimmed());
+       if(!file.canReadLine())break;
+
+
+
+   }
+   file.close();
+   return result;
+
+}
+//================================================================================
 void PrintHelpMenu()
 {
            qDebug()<<"help :";
+           qDebug()<<"to print result based on class names put classes.txt inside path";
            qDebug()<<"Usage: YoloDatasetTools /path/to/labels";
 
 }
@@ -70,12 +92,13 @@ int main(int argc, char *argv[])
 
      labels.append( GetClassCount(labelFiles[i]));
     }
+    QStringList classNames= GetClassNames(QString(argv[1])+"/classes.txt");
     int min = *std::min_element(labels.begin(), labels.end());
     int max = *std::max_element(labels.begin(), labels.end());
 
     for(int i=min;i<=max;i++)
     {
-        qDebug()<<"count lable "<<i<<" = "<<labels.count(i) << " " << labels.count(i)*100 /labels.length()<<"%";
+        qDebug()<<"count lable "<<i<<" "<<classNames[i]<<" = "<<labels.count(i) << " " << labels.count(i)*100 /labels.length()<<"%";
 
 
     }
