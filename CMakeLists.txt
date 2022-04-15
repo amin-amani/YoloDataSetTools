@@ -28,4 +28,6 @@ set(CurrentCommit \"${GIT_COMMIT_HASH}\")
 
 include_directories(YoloStatics)
 add_subdirectory(YoloStatics)
+add_subdirectory(YoloLabelSearch)
+add_subdirectory(YoloClassSplitter)
 

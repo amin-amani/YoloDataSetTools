@@ -1,7 +1,7 @@
 #include <QtCore>
 #include <QFile>
 //================================================================================
-QStringList GetDatatLabelFiles(QString path)
+QStringList GetDataSetLabelFiles(QString path)
 {
     QStringList result;
     QStringList filters={".txt"};
@@ -9,7 +9,7 @@ QStringList GetDatatLabelFiles(QString path)
     while (directoryIterator.hasNext())
     {
         QString fname= directoryIterator.next();
-        if(fname.contains("/."))
+        if(fname.contains("/.") || fname.contains("classes.txt"))
             continue;
 
         for(int i=0;i<filters.count();i++)
@@ -17,6 +17,7 @@ QStringList GetDatatLabelFiles(QString path)
 
             if(fname.endsWith(filters[i]))
             {
+
                 result.append(fname);
 
 
@@ -38,9 +39,9 @@ QVector<int> GetClassCount(QString fileName)
     while(true)
     {
 
-        QString line=file.readLine();
-        if(!file.canReadLine())break;
+        QString line=file.readLine().trimmed();
         result.append(line.split(" ")[0].toUInt());
+        if(!file.canReadLine())break;
 
 
     }
@@ -86,7 +87,7 @@ int main(int argc, char *argv[])
     }
     qDebug()<<"input path:"<<argv[1];
     QVector<int> labels;
-    QStringList labelFiles=GetDatatLabelFiles(argv[1]);
+    QStringList labelFiles=GetDataSetLabelFiles(argv[1]);
     for(int i=0;i<labelFiles.count();i++)
     {
 
