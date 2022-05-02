@@ -21,6 +21,7 @@ public:
     void RemoveLabelsFromYoloLabelAndTranslate(QString inputLabelFile, QString outputfile, QList<int> labels, int oldWidth, int oldHeight, int oldX, int oldY, int newWidth, int newHeight);
     QString GetLablesInsidePlate(QString plate, uint imageWidth, uint imageHeight, QString labelFileContent);
     bool RectIsChild(QRect parent, QRect child);
+    void CreateTranslatedOCR(QString plate, QString inputLabelFile, QString outputfile, int oldWidth, int oldHeight, int oldX, int oldY, int newWidth, int newHeight);
 signals:
 
 };

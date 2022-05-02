@@ -71,6 +71,40 @@ foreach (QString item, parts) {
 
 
 }
+void YoloLabel::CreateTranslatedOCR(QString plate,QString inputLabelFile, QString outputfile,
+                                       int oldWidth,int oldHeight,
+                                       int oldX,int oldY,int newWidth,int newHeight)
+{
+
+QRect plateLocation= GetImageLocation(plate,oldWidth,oldHeight);
+
+QString outputContent;
+if(!QFile::exists(inputLabelFile))return;
+  //qDebug()<<inputLabelFile;
+QFile inputFile(inputLabelFile);
+inputFile.open(QFile::ReadOnly);
+while(true)
+{
+
+    QString item=inputFile.readLine();
+    QRect itemLocation=GetImageLocation(item,oldWidth,oldHeight);
+
+    if(RectIsChild(plateLocation,itemLocation))
+       {
+     //   qDebug()<<item;
+      outputContent.append(TranslateLine(item,oldWidth,oldHeight,oldX,oldY,newWidth,newHeight)+"\n");
+    }
+    if(!inputFile.canReadLine())break;
+}
+
+inputFile.close();
+QFile outputFile(outputfile);
+outputFile.open(QFile::WriteOnly);
+outputFile.write(outputContent.toLatin1());
+outputFile.close();
+
+
+}
 //============================================================================================================
 
 QString YoloLabel::TranslateLine(QString YoloLableLine,int oldWidth,int oldHeight,int oldX,int oldY,int newWidth,int newHeight)

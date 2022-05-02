@@ -157,18 +157,19 @@ int main(int argc, char *argv[])
         QStringList plateList=  GetPlatePosition(labelFileName);
         QString imageFilename=GetImageFileNameFromLabelFileName(labelFileName);
         cv::Mat img=cv::imread(imageFilename.toStdString());
-        YoloLabel lab;
+
               int number=0;
         for(int j=0;j<plateList.length();j++)
         {
-
+    YoloLabel lab;
             QRect r= lab.GetImageLocation(plateList[j],img.cols,img.rows);
             cv::Mat plate= CropRectFromImage(img,r);
 
             cv::imwrite((outputPath+GetNameFromPath(imageFilename)+"_"+QString::number(number)+".png").toStdString(),plate);
-            QList<int> lst;
-            lst.append(43);
-            lab.RemoveLabelsFromYoloLabelAndTranslate(labelFileName,outputPath+GetNameFromPath(imageFilename)+"_"+QString::number(number++)+".txt",lst,img.cols,img.rows,r.x(),r.y(),r.width(),r.height());
+            lab.CreateTranslatedOCR(plateList[j],labelFileName,outputPath+GetNameFromPath(imageFilename)+"_"+QString::number(number++)+".txt",img.cols,img.rows,r.x(),r.y(),r.width(),r.height());
+//            QList<int> lst;
+//            lst.append(43);
+//            lab.RemoveLabelsFromYoloLabelAndTranslate(labelFileName,outputPath+GetNameFromPath(imageFilename)+"_"+QString::number(number++)+".txt",lst,img.cols,img.rows,r.x(),r.y(),r.width(),r.height());
 
 
         }
