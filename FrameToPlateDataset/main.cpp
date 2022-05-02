@@ -107,7 +107,18 @@ void PrintHelpMenu()
 
 cv::Mat CropRectFromImage(cv::Mat image,QRect location)
 {
-
+    if(location.x()+location.width()>image.cols){
+        location.setWidth(image.cols-location.x());
+    }
+    if(location.x()<1){
+        location.setX(1);
+    }
+    if(location.y()+location.height()>image.rows){
+        location.setHeight(image.rows-location.y());
+    }
+    if(location.y()<1){
+        location.setY(1);
+    }
     cv::Rect roi(location.x(), location.y(), location.width(), location.height());
     return  image(roi);
 
@@ -133,8 +144,8 @@ QString GetImageFileNameFromLabelFileName(QString labelFileName)
 int main(int argc, char *argv[])
 {
     // QCoreApplication a(argc, argv);
-  QVector<int> labels;
-     QDir dir;
+    QVector<int> labels;
+    QDir dir;
 
     if(argc<2){
         PrintHelpMenu();
@@ -157,27 +168,17 @@ int main(int argc, char *argv[])
         QStringList plateList=  GetPlatePosition(labelFileName);
         QString imageFilename=GetImageFileNameFromLabelFileName(labelFileName);
         cv::Mat img=cv::imread(imageFilename.toStdString());
-
-              int number=0;
+        qDebug()<<imageFilename;
+        int number=0;
         for(int j=0;j<plateList.length();j++)
         {
-    YoloLabel lab;
+            YoloLabel lab;
             QRect r= lab.GetImageLocation(plateList[j],img.cols,img.rows);
             cv::Mat plate= CropRectFromImage(img,r);
 
             cv::imwrite((outputPath+GetNameFromPath(imageFilename)+"_"+QString::number(number)+".png").toStdString(),plate);
             lab.CreateTranslatedOCR(plateList[j],labelFileName,outputPath+GetNameFromPath(imageFilename)+"_"+QString::number(number++)+".txt",img.cols,img.rows,r.x(),r.y(),r.width(),r.height());
-//            QList<int> lst;
-//            lst.append(43);
-//            lab.RemoveLabelsFromYoloLabelAndTranslate(labelFileName,outputPath+GetNameFromPath(imageFilename)+"_"+QString::number(number++)+".txt",lst,img.cols,img.rows,r.x(),r.y(),r.width(),r.height());
-
-
         }
-
-
-
-
-
     }
 
 
