@@ -30,4 +30,6 @@ include_directories(YoloStatics)
 add_subdirectory(YoloStatics)
 add_subdirectory(YoloLabelSearch)
 add_subdirectory(YoloClassSplitter)
+add_subdirectory(FrameToPlateDataset)
+add_subdirectory(test)
 
