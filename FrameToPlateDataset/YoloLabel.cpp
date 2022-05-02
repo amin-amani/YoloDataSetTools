@@ -17,7 +17,7 @@ QString YoloLabel::GenerateLable(int classID, float xCenter, float yCenter, floa
     w /= imageWidth;
     return QString::number(classID)+" "+QString::number(xc)+" "+QString::number(yc)+" "+QString::number(w)+" "+QString::number(h);
 }
-//============================================================================================================
+//==================================================================================
 QRect YoloLabel::GetImageLocation(QString YoloLableLine,int imageWidth,int imageHeight)
 {
     QRect res(0,0,0,0);
@@ -36,6 +36,39 @@ QRect YoloLabel::GetImageLocation(QString YoloLableLine,int imageWidth,int image
     res.setHeight(h);
 
     return  res;
+
+}
+//==================================================================================
+bool YoloLabel::RectIsChild(QRect parent,QRect child)
+{
+
+if(child.x()>parent.x() && child.y()> parent.y() &&
+        child.x()+child.width()<parent.x()+parent.width() &&
+        child.y()+child.height()<parent.y()+parent.height()
+        )
+    return true;
+
+    return false;
+}
+//==================================================================================
+QString YoloLabel::GetLablesInsidePlate(QString plate,uint imageWidth,uint imageHeight,QString labelFileContent)
+{
+    QString result;
+
+QRect plateLocation= GetImageLocation(plate,imageWidth,imageHeight);
+//qDebug()<<"plate:"<<plateLocation;
+QStringList parts= labelFileContent.split("\n");
+foreach (QString item, parts) {
+    QRect itemLocation=GetImageLocation(item,imageWidth,imageHeight);
+    if(RectIsChild(plateLocation,itemLocation))
+        result.append(item+"");
+ //  qDebug()<<"object"<<itemLocation;
+
+}
+
+
+    return  result;
+
 
 }
 //============================================================================================================

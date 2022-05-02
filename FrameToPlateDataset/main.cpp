@@ -120,6 +120,15 @@ QString GetNameFromPath(QString fileName)
     return parts[parts.length()-1];
 }
 //================================================================================
+QString GetImageFileNameFromLabelFileName(QString labelFileName)
+{
+    QString imageFilename= labelFileName;
+    imageFilename.replace(".txt",".jpg");
+    imageFilename.replace(".txt",".png");
+    imageFilename.replace(".txt",".bmp");
+    return imageFilename;
+}
+//================================================================================
 
 int main(int argc, char *argv[])
 {
@@ -146,9 +155,7 @@ int main(int argc, char *argv[])
 
         QString labelFileName=  labelFiles[i];
         QStringList plateList=  GetPlatePosition(labelFileName);
-        QString imageFilename= labelFileName;
-        imageFilename.replace(".txt",".jpg");
-        imageFilename.replace(".txt",".png");
+        QString imageFilename=GetImageFileNameFromLabelFileName(labelFileName);
         cv::Mat img=cv::imread(imageFilename.toStdString());
         YoloLabel lab;
               int number=0;
